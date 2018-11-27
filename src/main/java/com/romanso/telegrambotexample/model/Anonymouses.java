@@ -29,8 +29,8 @@ public final class Anonymouses {
         return mAnonymouses.removeIf(a -> a.getUser().equals(user));
     }
 
-    public Stream<Chat> getChats() {
-        return mAnonymouses.stream().map(Anonymous::getChat);
+    public Stream<Chat> getChatsForUsers() {
+        return mAnonymouses.stream().filter(a -> a.getDisplayedName() != null).map(Anonymous::getChat);
     }
 
     public Stream<String> getDisplayedNames() {

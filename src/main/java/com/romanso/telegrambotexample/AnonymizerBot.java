@@ -5,10 +5,13 @@ import com.romanso.telegrambotexample.model.Anonymouses;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
+import java.util.stream.Stream;
 
 public final class AnonymizerBot extends TelegramLongPollingCommandBot {
 
@@ -65,18 +68,20 @@ public final class AnonymizerBot extends TelegramLongPollingCommandBot {
             return;
         }
 
-        SendMessage answer = new SendMessage();
-        answer.setChatId(msg.getChatId());
-
         String messageText = String.format("%s:\n%s", mAnonymouses.getDisplayedName(user), msg.getText());
 
+        SendMessage answer = new SendMessage();
         answer.setText(messageText);
-        sendMessage(answer);
 
-        // @TODO send message to all users that use bot
+        Stream<Chat> chats = mAnonymouses.getChatsForUsers();
+        chats.forEach(chat -> {
+            answer.setChatId(chat.getId());
+            sendMessage(answer);
+        });
     }
 
     private boolean canSendMessage(User user, Message msg) {
+
         SendMessage answer = new SendMessage();
         answer.setChatId(msg.getChatId());
 
