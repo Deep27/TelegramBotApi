@@ -6,19 +6,17 @@ import org.telegram.telegrambots.meta.ApiContext;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 
-import java.net.Authenticator;
-import java.net.PasswordAuthentication;
+// import java.net.Authenticator;
+// import java.net.PasswordAuthentication;
 
 public class Main {
 
-    private final static String PROXY_HOST = "";
-    private final static int PROXY_PORT = -1;
+    private final static String PROXY_HOST = "80.11.200.161";
+    private final static int PROXY_PORT = 9999;
     private final static String PROXY_USER = "...";
     private final static String PROXY_PASSWORD = "...";
 
     public static void main(String[] args) {
-
-        System.out.println("Hello");
 
         try {
 
@@ -39,9 +37,9 @@ public class Main {
             botOptions.setProxyPort(PROXY_PORT);
             botOptions.setProxyType(DefaultBotOptions.ProxyType.SOCKS4);
 
-            botsApi.registerBot(new MyAmazingBot(botOptions));
+            botsApi.registerBot(new AnonymizerBot(botOptions));
+            System.out.println("Anonimyzer registered!");
 
-            System.out.println("Bot is registered!");
 
         } catch (TelegramApiRequestException e) {
             e.printStackTrace();
