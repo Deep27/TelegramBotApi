@@ -20,21 +20,23 @@ public final class StartCommand extends BotCommand {
     @Override
     public void execute(AbsSender absSender, User user, Chat chat, String[] strings) {
 
+        StringBuilder sb = new StringBuilder();
+
+        SendMessage welcomeMessage = new SendMessage();
+        welcomeMessage.setChatId(chat.getId().toString());
+
         if (!mAnonymouses.hasUser(user)) {
-
-            StringBuilder welcomeMessageBuilder = new StringBuilder();
-            welcomeMessageBuilder.append("Hi, ").append(user.getUserName()).append("!\n")
+            mAnonymouses.addUser(user);
+            sb.append("Hi, ").append(user.getUserName()).append("!\n")
                     .append("Please execute command:\n'/set_name <displayed_name>'\nwhere <displayed_name> is the name you want to use to hide your real name.");
+        }
 
-            SendMessage welcomeMessage = new SendMessage();
-            welcomeMessage.setChatId(chat.getId().toString());
-            welcomeMessage.setText(welcomeMessageBuilder.toString());
+        welcomeMessage.setText(sb.toString());
 
-            try {
-                absSender.execute(welcomeMessage);
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
-            }
+        try {
+            absSender.execute(welcomeMessage);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
         }
     }
 }

@@ -8,12 +8,12 @@ import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-public final class StopCommand extends BotCommand {
+public final class MyNameCommand extends BotCommand {
 
     private final Anonymouses mAnonymouses;
 
-    public StopCommand(Anonymouses anonymouses) {
-        super("stop", "remove yourself from bot users' list\n");
+    public MyNameCommand(Anonymouses anonymouses) {
+        super("my_name", "show your current name that will be displayed with your messages\n");
         mAnonymouses = anonymouses;
     }
 
@@ -22,17 +22,20 @@ public final class StopCommand extends BotCommand {
 
         StringBuilder sb = new StringBuilder();
 
-        SendMessage message = new SendMessage();
-        message.setChatId(chat.getId().toString());
+        SendMessage welcomeMessage = new SendMessage();
+        welcomeMessage.setChatId(chat.getId().toString());
 
-        mAnonymouses.removeUser(user);
+        if (!mAnonymouses.hasUser(user) || mAnonymouses.getDisplayedName(user) == null) {
+            mAnonymouses.addUser(user);
+            sb.append("Currently you don't have a name.\nSet it using command:\n'/set_name <displayed_name>'");
+        } else {
+            sb.append("Your current name: ").append(mAnonymouses.getDisplayedName(user));
+        }
 
-        sb.append("You've been removed from bot's users list!");
-
-        message.setText(sb.toString());
+        welcomeMessage.setText(sb.toString());
 
         try {
-            absSender.execute(message);
+            absSender.execute(welcomeMessage);
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }

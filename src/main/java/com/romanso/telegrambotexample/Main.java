@@ -38,8 +38,8 @@ public class Main {
             botOptions.setProxyType(DefaultBotOptions.ProxyType.SOCKS4);
 
             botsApi.registerBot(new AnonymizerBot(botOptions));
-            System.out.println("Anonimyzer registered!");
 
+            System.out.println("Anonymizer is up!");
 
         } catch (TelegramApiRequestException e) {
             e.printStackTrace();

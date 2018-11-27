@@ -4,6 +4,7 @@ import org.telegram.telegrambots.meta.api.objects.User;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
 public final class Anonymouses {
 
@@ -37,16 +38,24 @@ public final class Anonymouses {
         return AnonymousQueryStatus.NO_SUCH_USER;
     }
 
+    public Stream<User> getUsers() {
+        return mAnonymouses.keySet().stream();
+    }
+
+    public void addUser(User u) {
+        mAnonymouses.put(u, null);
+    }
+
     public boolean hasUser(User u) {
         return mAnonymouses.containsKey(u);
     }
 
-    private boolean isDisplayedNameTaken(String name) {
-        return mAnonymouses.entrySet().stream().anyMatch(a -> a.getValue().equals(name));
+    public String getDisplayedName(User u) {
+        return mAnonymouses.get(u);
     }
 
-    private String getDisplayedName(User u) {
-        return mAnonymouses.get(u);
+    private boolean isDisplayedNameTaken(String name) {
+        return mAnonymouses.entrySet().stream().anyMatch(a -> a.getValue().equals(name));
     }
 
     enum AnonymousQueryStatus {

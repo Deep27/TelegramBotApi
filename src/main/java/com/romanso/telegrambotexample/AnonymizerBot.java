@@ -1,9 +1,6 @@
 package com.romanso.telegrambotexample;
 
-import com.romanso.telegrambotexample.commands.HelpCommand;
-import com.romanso.telegrambotexample.commands.SetNameCommand;
-import com.romanso.telegrambotexample.commands.StartCommand;
-import com.romanso.telegrambotexample.commands.StopCommand;
+import com.romanso.telegrambotexample.commands.*;
 import com.romanso.telegrambotexample.model.Anonymouses;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
@@ -28,6 +25,7 @@ public final class AnonymizerBot extends TelegramLongPollingCommandBot {
         register(new StartCommand(mAnonymouses));
         register(new SetNameCommand(mAnonymouses));
         register(new StopCommand(mAnonymouses));
+        register(new MyNameCommand(mAnonymouses));
         HelpCommand helpCommand = new HelpCommand(this);
         register(helpCommand);
 
@@ -56,24 +54,20 @@ public final class AnonymizerBot extends TelegramLongPollingCommandBot {
 
             Message msg = update.getMessage();
 
-            // @TODO check queue
-
             if (msg.hasText()) {
-                SendMessage echoMessage = new SendMessage();
-                echoMessage.setChatId(msg.getChatId());
-                echoMessage.setText("Hey: " + msg.getText());
+
+                SendMessage message = new SendMessage();
+                message.setChatId(msg.getChatId());
+                message.setText("Hey: " + msg.getText());
 
                 try {
-                    execute(echoMessage);
+                    execute(message);
                 } catch (TelegramApiException e) {
                     e.printStackTrace();
                 }
             }
         }
     }
-
-
-
 
     @Override
     public String getBotToken() {

@@ -8,7 +8,11 @@ import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.util.Arrays;
+
 public final class SetNameCommand extends BotCommand {
+
+    private static final String ERROR_EMPTY_NAME = "You should set non-empty name!\n(/set_name <displayed_name>)";
 
     private final Anonymouses mAnonymouses;
 
@@ -20,23 +24,32 @@ public final class SetNameCommand extends BotCommand {
     @Override
     public void execute(AbsSender absSender, User user, Chat chat, String[] strings) {
 
-        String userName = chat.getUserName();
-
-        // если пользователь не указал алиас в настройках
-        if (userName == null || userName.isEmpty()) {
-            userName = user.getFirstName() + " " + user.getLastName();
-        }
-
-        StringBuilder message = new StringBuilder("Hello, ").append(userName);
-
-        if (strings != null && strings.length > 0) {
-            message.append("\nThank you!\n")
-                    .append(String.join(" ", strings));
-        }
+        StringBuilder sb = new StringBuilder();
 
         SendMessage answer = new SendMessage();
         answer.setChatId(chat.getId().toString());
-        answer.setText(message.toString());
+
+        if (strings == null || strings.length == 0) {
+            sb.append(ERROR_EMPTY_NAME);
+
+        } else {
+
+            Arrays.stream(strings).forEach(s -> sb.append(s).append(" "));
+            sb.setLength(sb.length() - 1);
+
+            String displayedName = sb.toString();
+            sb.setLength(0);
+
+            if (displayedName.trim().length() == 0) {
+                sb.append(ERROR_EMPTY_NAME);
+            } else {
+                mAnonymouses.setUserDisplayedName(user, displayedName);
+                sb.append("Your new displayed name: '").append(displayedName)
+                        .append("'. Now you can send messages to bot!");
+            }
+        }
+
+        answer.setText(sb.toString());
 
         try {
             absSender.execute(answer);
