@@ -1,64 +1,68 @@
 package com.romanso.telegrambotexample.model;
 
+import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.User;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Stream;
 
 public final class Anonymouses {
 
-    private final Map<User, String> mAnonymouses;
+    private final Set<Anonymous> mAnonymouses;
 
     public Anonymouses() {
-        mAnonymouses = new HashMap<>();
+        mAnonymouses = new HashSet<>();
     }
 
-    public AnonymousQueryStatus setUserDisplayedName(User user, String name) {
-
-        AnonymousQueryStatus status;
+    public boolean setUserDisplayedName(User user, String name) {
 
         if (isDisplayedNameTaken(name)) {
-            status = AnonymousQueryStatus.NAME_IS_TAKEN;
+            return false;
         } else {
-            status = mAnonymouses.containsKey(user) ? AnonymousQueryStatus.NAME_CHANGED : AnonymousQueryStatus.NAME_SET;
-            mAnonymouses.put(user, name);
+            mAnonymouses.stream().filter(a -> a.getUser().equals(user)).forEach(a -> a.setDisplayedName(name));
+            return true;
         }
-
-        return status;
     }
 
-    public AnonymousQueryStatus removeUser(User user) {
+    public boolean removeUser(User user) {
+        return mAnonymouses.removeIf(a -> a.getUser().equals(user));
+    }
 
-        if (mAnonymouses.containsKey(user)) {
-            mAnonymouses.remove(user);
-            return AnonymousQueryStatus.USER_REMOVED;
-        }
-
-        return AnonymousQueryStatus.NO_SUCH_USER;
+    public Stream<Chat> getChats() {
+        return mAnonymouses.stream().map(Anonymous::getChat);
     }
 
     public Stream<User> getUsers() {
-        return mAnonymouses.keySet().stream();
+        return mAnonymouses.stream().map(Anonymous::getUser);
     }
 
-    public void addUser(User u) {
-        mAnonymouses.put(u, null);
+    public Stream<String> getDisplayedNames() {
+        return mAnonymouses.stream().map(Anonymous::getDisplayedName);
+    }
+
+    public boolean addAnonymous(Anonymous anonymous) {
+        if (mAnonymouses.stream().anyMatch(a -> a.getUser().equals(anonymous.getUser()))) {
+            mAnonymouses.add(anonymous);
+            return true;
+        }
+        return false;
     }
 
     public boolean hasUser(User u) {
-        return mAnonymouses.containsKey(u);
+        return mAnonymouses.stream().filter(a -> a.getUser().equals(u)).findFirst().orElse(null) != null;
     }
 
     public String getDisplayedName(User u) {
-        return mAnonymouses.get(u);
+        Anonymous anonymous = mAnonymouses.stream().filter(a -> a.getUser().equals(u)).findFirst().orElse(null);
+        String displayedName = null;
+        if (anonymous != null) {
+            displayedName = anonymous.getDisplayedName();
+        }
+        return displayedName;
     }
 
     private boolean isDisplayedNameTaken(String name) {
-        return mAnonymouses.entrySet().stream().anyMatch(a -> a.getValue().equals(name));
-    }
-
-    enum AnonymousQueryStatus {
-        NAME_IS_TAKEN, NAME_SET, NAME_CHANGED, USER_REMOVED, NO_SUCH_USER
+        return getDisplayedNames().anyMatch(name::equals);
     }
 }

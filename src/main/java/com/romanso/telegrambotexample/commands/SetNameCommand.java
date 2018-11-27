@@ -12,8 +12,6 @@ import java.util.Arrays;
 
 public final class SetNameCommand extends BotCommand {
 
-    private static final String ERROR_EMPTY_NAME = "You should set non-empty name!\n(/set_name <displayed_name>)";
-
     private final Anonymouses mAnonymouses;
 
     public SetNameCommand(Anonymouses anonymouses) {
@@ -24,35 +22,46 @@ public final class SetNameCommand extends BotCommand {
     @Override
     public void execute(AbsSender absSender, User user, Chat chat, String[] strings) {
 
+        SendMessage message = new SendMessage();
+        message.setChatId(chat.getId().toString());
+
         StringBuilder sb = new StringBuilder();
 
-        SendMessage answer = new SendMessage();
-        answer.setChatId(chat.getId().toString());
-
-        if (strings == null || strings.length == 0) {
-            sb.append(ERROR_EMPTY_NAME);
-
-        } else {
-
-            Arrays.stream(strings).forEach(s -> sb.append(s).append(" "));
-            sb.setLength(sb.length() - 1);
-
-            String displayedName = sb.toString();
-            sb.setLength(0);
-
-            if (displayedName.trim().length() == 0) {
-                sb.append(ERROR_EMPTY_NAME);
-            } else {
-                mAnonymouses.setUserDisplayedName(user, displayedName);
-                sb.append("Your new displayed name: '").append(displayedName)
-                        .append("'. Now you can send messages to bot!");
-            }
+        if (!mAnonymouses.hasUser(user)) {
+            message.setText("Firstly you should start bot! Send /start command!");
+            sendMessage(absSender, message);
+            return;
         }
 
-        answer.setText(sb.toString());
+        String displayedName = getName(strings);
 
+        if (mAnonymouses.setUserDisplayedName(user, displayedName)) {
+            sb.append("Your new displayed name: '").append(displayedName)
+                    .append("'. Now you can send messages to bot!");
+        } else {
+            sb.append("Name ").append(displayedName).append(" is already in use! Choose another name!");
+        }
+
+        message.setText(sb.toString());
+        sendMessage(absSender, message);
+    }
+
+    private String getName(String[] strings) {
+
+        if (strings == null || strings.length == 0) {
+            return null;
+        }
+
+        StringBuilder nameBuilder = new StringBuilder();
+        Arrays.stream(strings).forEach(s -> nameBuilder.append(s).append(" "));
+        nameBuilder.setLength(nameBuilder.length() - 1);
+
+        return nameBuilder.toString().trim().length() != 0 ? nameBuilder.toString() : null;
+    }
+
+    private void sendMessage(AbsSender sender, SendMessage message) {
         try {
-            absSender.execute(answer);
+            sender.execute(message);
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }

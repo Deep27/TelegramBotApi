@@ -73,6 +73,4 @@ public final class AnonymizerBot extends TelegramLongPollingCommandBot {
     public String getBotToken() {
         return BOT_TOKEN;
     }
-
-
 }

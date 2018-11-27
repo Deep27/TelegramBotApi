@@ -25,8 +25,9 @@ public final class MyNameCommand extends BotCommand {
         SendMessage welcomeMessage = new SendMessage();
         welcomeMessage.setChatId(chat.getId().toString());
 
-        if (!mAnonymouses.hasUser(user) || mAnonymouses.getDisplayedName(user) == null) {
-            mAnonymouses.addUser(user);
+        if (!mAnonymouses.hasUser(user)) {
+            sb.append("You are not in bot users' list! Send /start command!");
+        } else if(mAnonymouses.getDisplayedName(user) == null) {
             sb.append("Currently you don't have a name.\nSet it using command:\n'/set_name <displayed_name>'");
         } else {
             sb.append("Your current name: ").append(mAnonymouses.getDisplayedName(user));

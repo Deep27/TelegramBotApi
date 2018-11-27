@@ -25,9 +25,11 @@ public final class StopCommand extends BotCommand {
         SendMessage message = new SendMessage();
         message.setChatId(chat.getId().toString());
 
-        mAnonymouses.removeUser(user);
-
-        sb.append("You've been removed from bot's users list!");
+        if (mAnonymouses.removeUser(user)) {
+            sb.append("You've been removed from bot's users list! Bye!");
+        } else {
+            sb.append("You were not in bot users'list. Bye!");
+        }
 
         message.setText(sb.toString());
 

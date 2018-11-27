@@ -1,5 +1,6 @@
 package com.romanso.telegrambotexample.commands;
 
+import com.romanso.telegrambotexample.model.Anonymous;
 import com.romanso.telegrambotexample.model.Anonymouses;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.BotCommand;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -25,10 +26,11 @@ public final class StartCommand extends BotCommand {
         SendMessage welcomeMessage = new SendMessage();
         welcomeMessage.setChatId(chat.getId().toString());
 
-        if (!mAnonymouses.hasUser(user)) {
-            mAnonymouses.addUser(user);
-            sb.append("Hi, ").append(user.getUserName()).append("!\n")
+        if (mAnonymouses.addAnonymous(new Anonymous(user, chat))) {
+            sb.append("Hi, ").append(user.getUserName()).append("you've been added to bot users' list!\n")
                     .append("Please execute command:\n'/set_name <displayed_name>'\nwhere <displayed_name> is the name you want to use to hide your real name.");
+        } else {
+            sb.append("You've already started bot! You can send messages if you have set your name.");
         }
 
         welcomeMessage.setText(sb.toString());
