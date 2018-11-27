@@ -20,8 +20,6 @@ public final class HelpCommand extends BotCommand {
     @Override
     public void execute(AbsSender absSender, User user, Chat chat, String[] strings) {
 
-        // @TODO check queue
-
         StringBuilder helpMessageBuilder = new StringBuilder("<b>Available commands:</b>\n\n");
 
         mCommandRegistry.getRegisteredCommands().forEach(cmd -> helpMessageBuilder.append(cmd.toString()).append("\n"));

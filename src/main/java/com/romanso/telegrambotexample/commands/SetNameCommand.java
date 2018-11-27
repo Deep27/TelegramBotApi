@@ -25,7 +25,6 @@ public final class SetNameCommand extends BotCommand {
         SendMessage message = new SendMessage();
         message.setChatId(chat.getId().toString());
 
-        StringBuilder sb = new StringBuilder();
 
         if (!mAnonymouses.hasUser(user)) {
             message.setText("Firstly you should start bot! Send /start command!");
@@ -34,6 +33,14 @@ public final class SetNameCommand extends BotCommand {
         }
 
         String displayedName = getName(strings);
+
+        if (displayedName == null) {
+            message.setText("You should use non-empty name!");
+            sendMessage(absSender, message);
+            return;
+        }
+
+        StringBuilder sb = new StringBuilder();
 
         if (mAnonymouses.setUserDisplayedName(user, displayedName)) {
             sb.append("Your new displayed name: '").append(displayedName)

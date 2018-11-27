@@ -33,16 +33,22 @@ public final class Anonymouses {
         return mAnonymouses.stream().map(Anonymous::getChat);
     }
 
-    public Stream<User> getUsers() {
-        return mAnonymouses.stream().map(Anonymous::getUser);
-    }
-
     public Stream<String> getDisplayedNames() {
         return mAnonymouses.stream().map(Anonymous::getDisplayedName);
     }
 
+    public boolean userHasName(User u) {
+
+        Anonymous anonymous = mAnonymouses.stream().filter(a -> a.getUser().equals(u)).findFirst().orElse(null);
+        if (anonymous == null) {
+            return false;
+        }
+
+        return anonymous.getDisplayedName() != null;
+    }
+
     public boolean addAnonymous(Anonymous anonymous) {
-        if (mAnonymouses.stream().anyMatch(a -> a.getUser().equals(anonymous.getUser()))) {
+        if (mAnonymouses.stream().noneMatch(a -> a.getUser().equals(anonymous.getUser()))) {
             mAnonymouses.add(anonymous);
             return true;
         }
@@ -63,6 +69,6 @@ public final class Anonymouses {
     }
 
     private boolean isDisplayedNameTaken(String name) {
-        return getDisplayedNames().anyMatch(name::equals);
+        return getDisplayedNames().anyMatch(n -> n != null && n.equals(name));
     }
 }
