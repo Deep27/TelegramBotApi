@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Configuration status="WARN">
+
+    <CustomLevels>
+        <CustomLevel name="STRANGE_USER" intLevel="360"/>
+        <CustomLevel name="SUCCESS_USER" intLevel="340"/>
+    </CustomLevels>
+
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%highlight{%d{HH:mm:ss} [%t] %-5level %logger{36} - %msg%n}{STRANGE_USER=bright yellow bold, SUCCESS_USER=bright green bold}"/>
+        </Console>
+    </Appenders>
+
+    <Loggers>
+        <Logger name="io.deep27soft.telegrambotexample" level="info" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+    </Loggers>
+
+    <Root>
+        <Appender ref="Console"/>
+    </Root>
+
+</Configuration>

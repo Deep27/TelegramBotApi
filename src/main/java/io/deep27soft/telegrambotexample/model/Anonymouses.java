@@ -68,6 +68,10 @@ public final class Anonymouses {
         return displayedName;
     }
 
+    public Stream<Anonymous> anonymouses() {
+        return mAnonymouses.stream();
+    }
+
     private boolean isDisplayedNameTaken(String name) {
         return getDisplayedNames().anyMatch(n -> n != null && n.equals(name));
     }
