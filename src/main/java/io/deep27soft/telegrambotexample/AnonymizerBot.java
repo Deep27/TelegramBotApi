@@ -1,7 +1,7 @@
-package com.romanso.telegrambotexample;
+package io.deep27soft.telegrambotexample;
 
-import com.romanso.telegrambotexample.commands.*;
-import com.romanso.telegrambotexample.model.Anonymouses;
+import io.deep27soft.telegrambotexample.commands.*;
+import io.deep27soft.telegrambotexample.model.Anonymouses;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;

@@ -1,2 +1,2 @@
 Manifest-Version: 1.0
-Main-Class: com.romanso.telegrambotexample.Main
+Main-Class: io.deep27soft.telegrambotexample.Main
