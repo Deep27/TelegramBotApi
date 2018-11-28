@@ -1,6 +1,6 @@
-package com.romanso.telegrambotexample.commands;
+package io.deep27soft.telegrambotexample.commands;
 
-import com.romanso.telegrambotexample.model.Anonymouses;
+import io.deep27soft.telegrambotexample.model.Anonymouses;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.BotCommand;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Chat;

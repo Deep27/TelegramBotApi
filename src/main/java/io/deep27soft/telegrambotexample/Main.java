@@ -1,4 +1,4 @@
-package com.romanso.telegrambotexample;
+package io.deep27soft.telegrambotexample;
 
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
