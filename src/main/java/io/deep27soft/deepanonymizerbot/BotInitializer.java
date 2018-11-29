@@ -1,6 +1,6 @@
-package io.deep27soft.telegrambotexample;
+package io.deep27soft.deepanonymizerbot;
 
-import io.deep27soft.telegrambotexample.bot.AnonymizerBot;
+import io.deep27soft.deepanonymizerbot.bot.AnonymizerBot;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.telegram.telegrambots.ApiContextInitializer;
@@ -33,13 +33,11 @@ public class BotInitializer {
 //            });
 
             LOG.info("Initializing API context...");
-
             ApiContextInitializer.init();
 
             TelegramBotsApi botsApi = new TelegramBotsApi();
 
             LOG.info("Configuring bot options...");
-
             DefaultBotOptions botOptions = ApiContext.getInstance(DefaultBotOptions.class);
 
             botOptions.setProxyHost(PROXY_HOST);
@@ -47,7 +45,6 @@ public class BotInitializer {
             botOptions.setProxyType(DefaultBotOptions.ProxyType.SOCKS4);
 
             LOG.info("Registering Anonymizer...");
-
             botsApi.registerBot(new AnonymizerBot(botOptions));
 
             LOG.info("Anonymizer bot is ready for handling messages!");

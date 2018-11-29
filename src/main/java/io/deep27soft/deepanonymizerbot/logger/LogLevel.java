@@ -1,4 +1,4 @@
-package io.deep27soft.telegrambotexample.logger;
+package io.deep27soft.deepanonymizerbot.logger;
 
 public abstract class LogLevel {
 

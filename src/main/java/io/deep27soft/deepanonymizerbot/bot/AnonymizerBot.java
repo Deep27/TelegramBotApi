@@ -1,10 +1,10 @@
-package io.deep27soft.telegrambotexample.bot;
+package io.deep27soft.deepanonymizerbot.bot;
 
-import io.deep27soft.telegrambotexample.commands.*;
-import io.deep27soft.telegrambotexample.logger.LogLevel;
-import io.deep27soft.telegrambotexample.logger.LogTemplate;
-import io.deep27soft.telegrambotexample.model.Anonymous;
-import io.deep27soft.telegrambotexample.model.Anonymouses;
+import io.deep27soft.deepanonymizerbot.commands.*;
+import io.deep27soft.deepanonymizerbot.logger.LogLevel;
+import io.deep27soft.deepanonymizerbot.logger.LogTemplate;
+import io.deep27soft.deepanonymizerbot.model.Anonymous;
+import io.deep27soft.deepanonymizerbot.model.Anonymouses;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -37,13 +37,19 @@ public final class AnonymizerBot extends TelegramLongPollingCommandBot {
         mAnonymouses = new Anonymouses();
 
         LOG.info("Registering commands...");
+        LOG.info("Registering '/start'...");
         register(new StartCommand(mAnonymouses));
+        LOG.info("Registering '/set_name'...");
         register(new SetNameCommand(mAnonymouses));
+        LOG.info("Registering '/stop'...");
         register(new StopCommand(mAnonymouses));
+        LOG.info("Registering '/my_name'...");
         register(new MyNameCommand(mAnonymouses));
         HelpCommand helpCommand = new HelpCommand(this);
+        LOG.info("Registering '/help'...");
         register(helpCommand);
 
+        LOG.info("Registering default action'...");
         registerDefaultAction(((absSender, message) -> {
 
             SendMessage text = new SendMessage();
@@ -121,7 +127,7 @@ public final class AnonymizerBot extends TelegramLongPollingCommandBot {
             return false;
         }
 
-        if (!mAnonymouses.userHasName(user)) {
+        if (mAnonymouses.getDisplayedName(user) == null) {
             LOG.log(Level.getLevel(LogLevel.STRANGE_USER), "User {} is trying to send message without setting a name!", user.hashCode());
             answer.setText("You must set a name before sending messages.\nUse '/set_name <displayed_name>' command.");
             replyToUser(answer, user, msg.getText());
@@ -146,8 +152,8 @@ public final class AnonymizerBot extends TelegramLongPollingCommandBot {
             execute(message);
             LOG.log(Level.getLevel(LogLevel.SUCCESS_USER), LogTemplate.USER_HAS_SEND_MESSAGE, user.hashCode(), messageText);
         } catch (TelegramApiException e) {
-            LOG.error(LogTemplate.USER_MESSAGE_CAUSED_EXCEPTION, user.hashCode(), e);
             // @TODO handle exception
+            LOG.error(LogTemplate.USER_MESSAGE_CAUSED_EXCEPTION, user.hashCode(), e);
         }
     }
 }

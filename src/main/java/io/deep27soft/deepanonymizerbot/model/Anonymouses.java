@@ -1,9 +1,9 @@
-package io.deep27soft.telegrambotexample.model;
+package io.deep27soft.deepanonymizerbot.model;
 
-import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.User;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -29,30 +29,8 @@ public final class Anonymouses {
         return mAnonymouses.removeIf(a -> a.getUser().equals(user));
     }
 
-    public Stream<Chat> getChatsForUsers() {
-        return mAnonymouses.stream().filter(a -> a.getDisplayedName() != null).map(Anonymous::getChat);
-    }
-
-    public Stream<String> getDisplayedNames() {
-        return mAnonymouses.stream().map(Anonymous::getDisplayedName);
-    }
-
-    public boolean userHasName(User u) {
-
-        Anonymous anonymous = mAnonymouses.stream().filter(a -> a.getUser().equals(u)).findFirst().orElse(null);
-        if (anonymous == null) {
-            return false;
-        }
-
-        return anonymous.getDisplayedName() != null;
-    }
-
     public boolean addAnonymous(Anonymous anonymous) {
-        if (mAnonymouses.stream().noneMatch(a -> a.getUser().equals(anonymous.getUser()))) {
-            mAnonymouses.add(anonymous);
-            return true;
-        }
-        return false;
+        return mAnonymouses.add(anonymous);
     }
 
     public boolean hasUser(User u) {
@@ -60,12 +38,13 @@ public final class Anonymouses {
     }
 
     public String getDisplayedName(User u) {
+
         Anonymous anonymous = mAnonymouses.stream().filter(a -> a.getUser().equals(u)).findFirst().orElse(null);
-        String displayedName = null;
-        if (anonymous != null) {
-            displayedName = anonymous.getDisplayedName();
+
+        if (anonymous == null) {
+            return null;
         }
-        return displayedName;
+        return anonymous.getDisplayedName();
     }
 
     public Stream<Anonymous> anonymouses() {
@@ -73,6 +52,6 @@ public final class Anonymouses {
     }
 
     private boolean isDisplayedNameTaken(String name) {
-        return getDisplayedNames().anyMatch(n -> n != null && n.equals(name));
+        return mAnonymouses.stream().anyMatch(a -> Objects.equals(a.getDisplayedName(), name));
     }
 }
