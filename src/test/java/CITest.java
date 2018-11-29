@@ -6,6 +6,6 @@ public class CITest {
 
     @Test
     public void testCI() {
-        assertEquals(2 + 2, 4);
+        assertEquals(2 + 2, 5);
     }
 }
