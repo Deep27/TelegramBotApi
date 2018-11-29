@@ -127,7 +127,7 @@ public final class AnonymizerBot extends TelegramLongPollingCommandBot {
             return false;
         }
 
-        if (!mAnonymouses.userHasName(user)) {
+        if (mAnonymouses.getDisplayedName(user) == null) {
             LOG.log(Level.getLevel(LogLevel.STRANGE_USER), "User {} is trying to send message without setting a name!", user.hashCode());
             answer.setText("You must set a name before sending messages.\nUse '/set_name <displayed_name>' command.");
             replyToUser(answer, user, msg.getText());
