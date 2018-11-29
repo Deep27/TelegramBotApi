@@ -1,7 +1,7 @@
-package io.deep27soft.telegrambotexample.bot;
+package io.deep27soft.deepanonymizerbot.commands;
 
-import io.deep27soft.telegrambotexample.logger.LogLevel;
-import io.deep27soft.telegrambotexample.logger.LogTemplate;
+import io.deep27soft.deepanonymizerbot.logger.LogLevel;
+import io.deep27soft.deepanonymizerbot.logger.LogTemplate;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

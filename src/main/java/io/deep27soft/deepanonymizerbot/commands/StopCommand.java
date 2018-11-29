@@ -1,9 +1,8 @@
-package io.deep27soft.telegrambotexample.commands;
+package io.deep27soft.deepanonymizerbot.commands;
 
-import io.deep27soft.telegrambotexample.bot.AnonymizerCommand;
-import io.deep27soft.telegrambotexample.logger.LogLevel;
-import io.deep27soft.telegrambotexample.logger.LogTemplate;
-import io.deep27soft.telegrambotexample.model.Anonymouses;
+import io.deep27soft.deepanonymizerbot.logger.LogLevel;
+import io.deep27soft.deepanonymizerbot.logger.LogTemplate;
+import io.deep27soft.deepanonymizerbot.model.Anonymouses;
 import org.apache.logging.log4j.Level;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Chat;

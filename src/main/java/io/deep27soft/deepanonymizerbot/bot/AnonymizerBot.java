@@ -1,10 +1,10 @@
-package io.deep27soft.telegrambotexample.bot;
+package io.deep27soft.deepanonymizerbot.bot;
 
-import io.deep27soft.telegrambotexample.commands.*;
-import io.deep27soft.telegrambotexample.logger.LogLevel;
-import io.deep27soft.telegrambotexample.logger.LogTemplate;
-import io.deep27soft.telegrambotexample.model.Anonymous;
-import io.deep27soft.telegrambotexample.model.Anonymouses;
+import io.deep27soft.deepanonymizerbot.commands.*;
+import io.deep27soft.deepanonymizerbot.logger.LogLevel;
+import io.deep27soft.deepanonymizerbot.logger.LogTemplate;
+import io.deep27soft.deepanonymizerbot.model.Anonymous;
+import io.deep27soft.deepanonymizerbot.model.Anonymouses;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -37,13 +37,19 @@ public final class AnonymizerBot extends TelegramLongPollingCommandBot {
         mAnonymouses = new Anonymouses();
 
         LOG.info("Registering commands...");
+        LOG.info("Registering '/start'...");
         register(new StartCommand(mAnonymouses));
+        LOG.info("Registering '/set_name'...");
         register(new SetNameCommand(mAnonymouses));
+        LOG.info("Registering '/stop'...");
         register(new StopCommand(mAnonymouses));
+        LOG.info("Registering '/my_name'...");
         register(new MyNameCommand(mAnonymouses));
         HelpCommand helpCommand = new HelpCommand(this);
+        LOG.info("Registering '/help'...");
         register(helpCommand);
 
+        LOG.info("Registering default action'...");
         registerDefaultAction(((absSender, message) -> {
 
             SendMessage text = new SendMessage();

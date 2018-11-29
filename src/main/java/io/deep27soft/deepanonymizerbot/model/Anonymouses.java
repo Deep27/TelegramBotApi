@@ -1,4 +1,4 @@
-package io.deep27soft.telegrambotexample.model;
+package io.deep27soft.deepanonymizerbot.model;
 
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.User;

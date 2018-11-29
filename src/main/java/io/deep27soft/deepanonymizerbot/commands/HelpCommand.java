@@ -1,7 +1,6 @@
-package io.deep27soft.telegrambotexample.commands;
+package io.deep27soft.deepanonymizerbot.commands;
 
-import io.deep27soft.telegrambotexample.bot.AnonymizerCommand;
-import io.deep27soft.telegrambotexample.logger.LogTemplate;
+import io.deep27soft.deepanonymizerbot.logger.LogTemplate;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.ICommandRegistry;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Chat;
