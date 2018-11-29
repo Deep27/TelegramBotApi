@@ -152,8 +152,8 @@ public final class AnonymizerBot extends TelegramLongPollingCommandBot {
             execute(message);
             LOG.log(Level.getLevel(LogLevel.SUCCESS_USER), LogTemplate.USER_HAS_SEND_MESSAGE, user.hashCode(), messageText);
         } catch (TelegramApiException e) {
-            LOG.error(LogTemplate.USER_MESSAGE_CAUSED_EXCEPTION, user.hashCode(), e);
             // @TODO handle exception
+            LOG.error(LogTemplate.USER_MESSAGE_CAUSED_EXCEPTION, user.hashCode(), e);
         }
     }
 }
