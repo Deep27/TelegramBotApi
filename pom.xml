@@ -41,6 +41,7 @@
                 <configuration>
                     <skipTests>false</skipTests>
                     <forkMode>once</forkMode>
+                    <testFailureIgnore>true</testFailureIgnore>
                 </configuration>
             </plugin>
         </plugins>
