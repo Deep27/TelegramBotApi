@@ -40,8 +40,7 @@
                 <version>2.22.0</version>
                 <configuration>
                     <skipTests>false</skipTests>
-                    <forkMode>once</forkMode>
-                    <testFailureIgnore>true</testFailureIgnore>
+                    <forkCount>0</forkCount>
                 </configuration>
             </plugin>
         </plugins>
