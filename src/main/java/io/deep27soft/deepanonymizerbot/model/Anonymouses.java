@@ -34,7 +34,7 @@ public final class Anonymouses {
     }
 
     public boolean hasUser(User u) {
-        return mAnonymouses.stream().filter(a -> a.getUser().equals(u)).findFirst().orElse(null) != null;
+        return mAnonymouses.stream().anyMatch(a -> a.getUser().equals(u));
     }
 
     public String getDisplayedName(User u) {
@@ -50,6 +50,7 @@ public final class Anonymouses {
     public Stream<Anonymous> anonymouses() {
         return mAnonymouses.stream();
     }
+
 
     private boolean isDisplayedNameTaken(String name) {
         return mAnonymouses.stream().anyMatch(a -> Objects.equals(a.getDisplayedName(), name));
