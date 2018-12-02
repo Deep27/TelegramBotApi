@@ -22,7 +22,7 @@ public final class StartCommand extends AnonymizerCommand {
     @Override
     public void execute(AbsSender absSender, User user, Chat chat, String[] strings) {
 
-        log.info(LogTemplate.USER_IS_EXECITING_COMMAND, user.hashCode(), getCommandIdentifier());
+        log.info(LogTemplate.COMMAND_PROCESSING, user.getId(), getCommandIdentifier());
 
         StringBuilder sb = new StringBuilder();
 
@@ -30,15 +30,15 @@ public final class StartCommand extends AnonymizerCommand {
         message.setChatId(chat.getId().toString());
 
         if (mAnonymouses.addAnonymous(new Anonymous(user, chat))) {
-            log.info("User {} is trying to execute '{}' the first time. Added to users' list.", user.hashCode(), getCommandIdentifier());
+            log.info("User {} is trying to execute '{}' the first time. Added to users' list.", user.getId(), getCommandIdentifier());
             sb.append("Hi, ").append(user.getUserName()).append("! You've been added to bot users' list!\n")
                     .append("Please execute command:\n'/set_name <displayed_name>'\nwhere <displayed_name> is the name you want to use to hide your real name.");
         } else {
-            log.log(Level.getLevel(LogLevel.STRANGE_USER), "User {} has already executed '{}'. Is he trying to do it one more time?", user.hashCode(), getCommandIdentifier());
-            sb.append("You've already started bot! You can send messages if you have set your name.");
+            log.log(Level.getLevel(LogLevel.STRANGE), "User {} has already executed '{}'. Is he trying to do it one more time?", user.getId(), getCommandIdentifier());
+            sb.append("You've already started bot! You can send messages if you set your name.");
         }
 
         message.setText(sb.toString());
-        sendMessageToUser(absSender, message, user);
+        execute(absSender, message, user);
     }
 }

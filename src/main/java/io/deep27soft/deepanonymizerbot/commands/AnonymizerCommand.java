@@ -11,24 +11,20 @@ import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-public abstract class AnonymizerCommand extends BotCommand {
+abstract class AnonymizerCommand extends BotCommand {
 
-    protected final Logger log = LogManager.getLogger(getClass());
+    final Logger log = LogManager.getLogger(getClass());
 
-    protected AnonymizerCommand(String commandIdentifier, String description) {
+    AnonymizerCommand(String commandIdentifier, String description) {
         super(commandIdentifier, description);
     }
 
-    // @TODO make abstract and implement in children
-    protected void processTelegramApiException() {}
-
-    protected void sendMessageToUser(AbsSender sender, SendMessage message, User user) {
+    void execute(AbsSender sender, SendMessage message, User user) {
         try {
             sender.execute(message);
-            log.log(Level.getLevel(LogLevel.SUCCESS_USER), LogTemplate.USER_EXECUTED_COMMAND, user.hashCode(), getCommandIdentifier());
+            log.log(Level.getLevel(LogLevel.SUCCESS), LogTemplate.COMMAND_SUCCESS, user.getId(), getCommandIdentifier());
         } catch (TelegramApiException e) {
-            log.error(LogTemplate.USER_COMMAND_CAUSED_EXCEPTION, user.hashCode(), getCommandIdentifier(), e);
-            processTelegramApiException();
+            log.error(LogTemplate.COMMAND_EXCEPTION, user.getId(), getCommandIdentifier(), e);
         }
     }
 }

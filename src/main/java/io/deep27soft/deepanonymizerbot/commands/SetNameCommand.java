@@ -23,24 +23,24 @@ public final class SetNameCommand extends AnonymizerCommand {
     @Override
     public void execute(AbsSender absSender, User user, Chat chat, String[] strings) {
 
-        log.info(LogTemplate.USER_IS_EXECITING_COMMAND, user.hashCode(), getCommandIdentifier());
+        log.info(LogTemplate.COMMAND_PROCESSING, user.getId(), getCommandIdentifier());
 
         SendMessage message = new SendMessage();
         message.setChatId(chat.getId().toString());
 
         if (!mAnonymouses.hasUser(user)) {
-            log.log(Level.getLevel(LogLevel.STRANGE_USER), "User {} is trying to execute '{}' without starting bot!", user.hashCode(), getCommandIdentifier());
-            message.setText("Firstly you should start bot! Send /start command!");
-            sendMessageToUser(absSender, message, user);
+            log.log(Level.getLevel(LogLevel.STRANGE), "User {} is trying to execute '{}' without starting the bot!", user.getId(), getCommandIdentifier());
+            message.setText("Firstly you should start the bot! Execute '/start' command!");
+            execute(absSender, message, user);
             return;
         }
 
         String displayedName = getName(strings);
 
         if (displayedName == null) {
-            log.log(Level.getLevel(LogLevel.STRANGE_USER), "User {} is trying to set empty name.", user.hashCode());
+            log.log(Level.getLevel(LogLevel.STRANGE), "User {} is trying to set empty name.", user.getId());
             message.setText("You should use non-empty name!");
-            sendMessageToUser(absSender, message, user);
+            execute(absSender, message, user);
             return;
         }
 
@@ -49,20 +49,20 @@ public final class SetNameCommand extends AnonymizerCommand {
         if (mAnonymouses.setUserDisplayedName(user, displayedName)) {
 
             if (mAnonymouses.getDisplayedName(user) == null) {
-                log.info("User {} set a name '{}'", user.hashCode(), displayedName);
+                log.info("User {} set a name '{}'", user.getId(), displayedName);
                 sb.append("Your displayed name: '").append(displayedName)
                         .append("'. Now you can send messages to bot!");
             } else {
-                log.info("User {} has changed name to '{}'", user.hashCode(), displayedName);
+                log.info("User {} has changed name to '{}'", user.getId(), displayedName);
                 sb.append("Your new displayed name: '").append(displayedName).append("'.");
             }
         } else {
-            log.log(Level.getLevel(LogLevel.STRANGE_USER), "User {} is trying to set taken name '{}'", user.hashCode(), displayedName);
+            log.log(Level.getLevel(LogLevel.STRANGE), "User {} is trying to set taken name '{}'", user.getId(), displayedName);
             sb.append("Name ").append(displayedName).append(" is already in use! Choose another name!");
         }
 
         message.setText(sb.toString());
-        sendMessageToUser(absSender, message, user);
+        execute(absSender, message, user);
     }
 
     private String getName(String[] strings) {
@@ -71,10 +71,7 @@ public final class SetNameCommand extends AnonymizerCommand {
             return null;
         }
 
-        StringBuilder nameBuilder = new StringBuilder();
-        Arrays.stream(strings).forEach(s -> nameBuilder.append(s).append(" "));
-        nameBuilder.setLength(nameBuilder.length() - 1);
-
-        return nameBuilder.toString().trim().length() != 0 ? nameBuilder.toString() : null;
+        String name = String.join(" ", strings);
+        return name.replaceAll(" ", "").length() == 0 ? null : name;
     }
 }

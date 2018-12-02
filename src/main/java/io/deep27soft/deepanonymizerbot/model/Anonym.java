@@ -3,29 +3,23 @@ package io.deep27soft.deepanonymizerbot.model;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.User;
 
-public final class Anonymous {
+public final class Anonym extends User {
 
-    private final User mUser;
     private final Chat mChat;
     private String mDisplayedName;
 
-    public Anonymous(User user, Chat chat) {
-        mUser = user;
+    public Anonym(Chat chat) {
         mChat = chat;
     }
 
     @Override
     public int hashCode() {
-        return mUser.hashCode();
+        return super.hashCode();
     }
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof Anonymous && ((Anonymous) obj).getUser().equals(mUser);
-    }
-
-    public User getUser() {
-        return mUser;
+        return obj instanceof Anonym && super.equals(obj);
     }
 
     public Chat getChat() {

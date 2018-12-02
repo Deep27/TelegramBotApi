@@ -9,28 +9,16 @@ import org.telegram.telegrambots.meta.ApiContext;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 
-// import java.net.Authenticator;
-// import java.net.PasswordAuthentication;
-
-public class BotInitializer {
+public final class BotInitializer {
 
     private static final Logger LOG = LogManager.getLogger(BotInitializer.class);
 
     private final static String PROXY_HOST = "80.11.200.161";
     private final static int PROXY_PORT = 9999;
-    private final static String PROXY_USER = "...";
-    private final static String PROXY_PASSWORD = "...";
 
     public static void main(String[] args) {
 
         try {
-
-//            Authenticator.setDefault(new Authenticator() {
-//                @Override
-//                protected PasswordAuthentication getPasswordAuthentication() {
-//                    return new PasswordAuthentication(PROXY_USER, PROXY_PASSWORD.toCharArray());
-//                }
-//            });
 
             LOG.info("Initializing API context...");
             ApiContextInitializer.init();
@@ -47,7 +35,7 @@ public class BotInitializer {
             LOG.info("Registering Anonymizer...");
             botsApi.registerBot(new AnonymizerBot(botOptions));
 
-            LOG.info("Anonymizer bot is ready for handling messages!");
+            LOG.info("Anonymizer bot is ready for work!");
 
         } catch (TelegramApiRequestException e) {
             LOG.error("Error while initializing bot!", e);

@@ -22,8 +22,8 @@ public final class AnonymizerBot extends TelegramLongPollingCommandBot {
 
     private static final Logger LOG = LogManager.getLogger(AnonymizerBot.class);
 
-    private static final String BOT_NAME = "Deep27Bot";
-    private static final String BOT_TOKEN = "704317455:AAEXxxIUsX9MY8Zl2Ht05o_xGwzC6hAixq0";
+    private static final String BOT_NAME = "AnonymizerBotExample";
+    private static final String BOT_TOKEN = "749430772:AAF54VXPZeGRgFWmjCto-c8EIm7Ydk_VCW0";
 
     private final Anonymouses mAnonymouses;
 
@@ -84,7 +84,7 @@ public final class AnonymizerBot extends TelegramLongPollingCommandBot {
         Message msg = update.getMessage();
         User user = msg.getFrom();
 
-        LOG.info("Processing user {} message...", user.hashCode());
+        LOG.info(LogTemplate.MESSAGE_PROCESSING, user.hashCode());
 
         if (!canSendMessage(user, msg)) {
             return;
@@ -114,21 +114,21 @@ public final class AnonymizerBot extends TelegramLongPollingCommandBot {
         answer.setChatId(msg.getChatId());
 
         if (!msg.hasText() || msg.getText().trim().length() == 0) {
-            LOG.log(Level.getLevel(LogLevel.STRANGE_USER), "User {} is trying to send empty message!", user.hashCode());
+            LOG.log(Level.getLevel(LogLevel.STRANGE), "User {} is trying to send empty message!", user.hashCode());
             answer.setText("You shouldn't send empty messages!");
             replyToUser(answer, user, msg.getText());
             return false;
         }
 
         if(!mAnonymouses.hasUser(user)) {
-            LOG.log(Level.getLevel(LogLevel.STRANGE_USER), "User {} is trying to send message without starting the bot!", user.hashCode());
+            LOG.log(Level.getLevel(LogLevel.STRANGE), "User {} is trying to send message without starting the bot!", user.hashCode());
             answer.setText("Firstly you should start bot! Use /start command!");
             replyToUser(answer, user, msg.getText());
             return false;
         }
 
         if (mAnonymouses.getDisplayedName(user) == null) {
-            LOG.log(Level.getLevel(LogLevel.STRANGE_USER), "User {} is trying to send message without setting a name!", user.hashCode());
+            LOG.log(Level.getLevel(LogLevel.STRANGE), "User {} is trying to send message without setting a name!", user.hashCode());
             answer.setText("You must set a name before sending messages.\nUse '/set_name <displayed_name>' command.");
             replyToUser(answer, user, msg.getText());
             return false;
@@ -140,20 +140,18 @@ public final class AnonymizerBot extends TelegramLongPollingCommandBot {
     private void sendMessageToUser(SendMessage message, User receiver, User sender) {
         try {
             execute(message);
-            LOG.log(Level.getLevel(LogLevel.SUCCESS_USER), LogTemplate.USER_HAS_RECEIVED_MESSAGE_FROM_ANOTHER_USER, receiver.hashCode(), sender.hashCode());
+            LOG.log(Level.getLevel(LogLevel.SUCCESS), LogTemplate.MESSAGE_RECEIVED, receiver.hashCode(), sender.hashCode());
         } catch (TelegramApiException e) {
-            LOG.error(LogTemplate.USER_COULD_NOT_RECEIVE_MESSAGE_FROM_ANOTHER_USER, receiver.hashCode(), sender.hashCode(), e);
-            // @TODO handle exception
+            LOG.error(LogTemplate.MESSAGE_LOST, receiver.hashCode(), sender.hashCode(), e);
         }
     }
 
     private void replyToUser(SendMessage message, User user, String messageText) {
         try {
             execute(message);
-            LOG.log(Level.getLevel(LogLevel.SUCCESS_USER), LogTemplate.USER_HAS_SEND_MESSAGE, user.hashCode(), messageText);
+            LOG.log(Level.getLevel(LogLevel.SUCCESS), LogTemplate.MESSAGE_RECEIVED, user.hashCode(), messageText);
         } catch (TelegramApiException e) {
-            // @TODO handle exception
-            LOG.error(LogTemplate.USER_MESSAGE_CAUSED_EXCEPTION, user.hashCode(), e);
+            LOG.error(LogTemplate.MESSAGE_EXCEPTION, user.hashCode(), e);
         }
     }
 }

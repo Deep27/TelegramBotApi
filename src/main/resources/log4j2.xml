@@ -2,8 +2,8 @@
 <Configuration status="WARN">
 
     <CustomLevels>
-        <CustomLevel name="STRANGE_USER" intLevel="360"/>
-        <CustomLevel name="SUCCESS_USER" intLevel="340"/>
+        <CustomLevel name="STRANGE" intLevel="360"/>
+        <CustomLevel name="SUCCESS" intLevel="340"/>
     </CustomLevels>
 
     <Appenders>
