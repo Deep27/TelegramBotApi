@@ -35,7 +35,7 @@ public final class StartCommand extends AnonymizerCommand {
                     .append("Please execute command:\n'/set_name <displayed_name>'\nwhere <displayed_name> is the name you want to use to hide your real name.");
         } else {
             log.log(Level.getLevel(LogLevel.STRANGE), "User {} has already executed '{}'. Is he trying to do it one more time?", user.getId(), getCommandIdentifier());
-            sb.append("You've already started bot! You can send messages if you set your name.");
+            sb.append("You've already started bot! You can send messages if you set your name (/set_name).");
         }
 
         message.setText(sb.toString());
