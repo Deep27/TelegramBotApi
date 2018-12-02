@@ -21,7 +21,7 @@ public final class Anonymous {
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof User && mUser.equals(obj);
+        return obj instanceof Anonymous && ((Anonymous) obj).getUser().equals(mUser);
     }
 
     public User getUser() {

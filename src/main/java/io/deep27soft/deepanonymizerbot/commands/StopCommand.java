@@ -21,22 +21,22 @@ public final class StopCommand extends AnonymizerCommand {
     @Override
     public void execute(AbsSender absSender, User user, Chat chat, String[] strings) {
 
-        log.info(LogTemplate.USER_IS_EXECITING_COMMAND, user.hashCode(), getCommandIdentifier());
+        log.info(LogTemplate.COMMAND_PROCESSING, user.getId(), getCommandIdentifier());
 
         StringBuilder sb = new StringBuilder();
 
         SendMessage message = new SendMessage();
         message.setChatId(chat.getId().toString());
 
-        if (mAnonymouses.removeUser(user)) {
-            log.info("User {} has been removed from users list!", user.hashCode());
+        if (mAnonymouses.removeAnonymous(user)) {
+            log.info("User {} has been removed from users list!", user.getId());
             sb.append("You've been removed from bot's users list! Bye!");
         } else {
-            log.log(Level.getLevel(LogLevel.STRANGE_USER), "User {} is trying to execute '{}' without having executed 'start' before!", user.hashCode(), getCommandIdentifier());
+            log.log(Level.getLevel(LogLevel.STRANGE), "User {} is trying to execute '{}' without having executed 'start' before!", user.getId(), getCommandIdentifier());
             sb.append("You were not in bot users' list. Bye!");
         }
 
         message.setText(sb.toString());
-        sendMessageToUser(absSender, message, user);
+        execute(absSender, message, user);
     }
 }

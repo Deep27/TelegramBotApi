@@ -25,7 +25,7 @@ public final class Anonymouses {
         }
     }
 
-    public boolean removeUser(User user) {
+    public boolean removeAnonymous(User user) {
         return mAnonymouses.removeIf(a -> a.getUser().equals(user));
     }
 
@@ -33,7 +33,7 @@ public final class Anonymouses {
         return mAnonymouses.add(anonymous);
     }
 
-    public boolean hasUser(User u) {
+    public boolean hasAnonymous(User u) {
         return mAnonymouses.stream().anyMatch(a -> a.getUser().equals(u));
     }
 

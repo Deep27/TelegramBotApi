@@ -21,30 +21,30 @@ public final class MyNameCommand extends AnonymizerCommand {
     @Override
     public void execute(AbsSender absSender, User user, Chat chat, String[] strings) {
 
-        log.info(LogTemplate.USER_IS_EXECITING_COMMAND, user.hashCode(), getCommandIdentifier());
+        log.info(LogTemplate.COMMAND_PROCESSING, user.getId(), getCommandIdentifier());
 
         StringBuilder sb = new StringBuilder();
 
         SendMessage message = new SendMessage();
         message.setChatId(chat.getId().toString());
 
-        if (!mAnonymouses.hasUser(user)) {
+        if (!mAnonymouses.hasAnonymous(user)) {
 
             sb.append("You are not in bot users' list! Send /start command!");
-            log.log(Level.getLevel(LogLevel.STRANGE_USER), "User {} is trying to execute '{}' without starting the bot.", user.hashCode(), getCommandIdentifier());
+            log.log(Level.getLevel(LogLevel.STRANGE), "User {} is trying to execute '{}' without starting the bot.", user.getId(), getCommandIdentifier());
 
         } else if(mAnonymouses.getDisplayedName(user) == null) {
 
             sb.append("Currently you don't have a name.\nSet it using command:\n'/set_name <displayed_name>'");
-            log.log(Level.getLevel(LogLevel.STRANGE_USER), "User {} is trying to execute '{}' without having a name.", user.hashCode(), getCommandIdentifier());
+            log.log(Level.getLevel(LogLevel.STRANGE), "User {} is trying to execute '{}' without having a name.", user.getId(), getCommandIdentifier());
 
         } else {
 
-            log.info("User {} is executing '{}'. Name is '{}'.", user.hashCode(), getCommandIdentifier(), mAnonymouses.getDisplayedName(user));
+            log.info("User {} is executing '{}'. Name is '{}'.", user.getId(), getCommandIdentifier(), mAnonymouses.getDisplayedName(user));
             sb.append("Your current name: ").append(mAnonymouses.getDisplayedName(user));
         }
 
         message.setText(sb.toString());
-        sendMessageToUser(absSender, message, user);
+        execute(absSender, message, user);
     }
 }
