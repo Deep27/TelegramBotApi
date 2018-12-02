@@ -28,7 +28,7 @@ public final class StopCommand extends AnonymizerCommand {
         SendMessage message = new SendMessage();
         message.setChatId(chat.getId().toString());
 
-        if (mAnonymouses.removeUser(user)) {
+        if (mAnonymouses.removeAnonymous(user)) {
             log.info("User {} has been removed from users list!", user.getId());
             sb.append("You've been removed from bot's users list! Bye!");
         } else {

@@ -9,8 +9,6 @@ import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 
-import java.util.Arrays;
-
 public final class SetNameCommand extends AnonymizerCommand {
 
     private final Anonymouses mAnonymouses;
@@ -28,7 +26,7 @@ public final class SetNameCommand extends AnonymizerCommand {
         SendMessage message = new SendMessage();
         message.setChatId(chat.getId().toString());
 
-        if (!mAnonymouses.hasUser(user)) {
+        if (!mAnonymouses.hasAnonymous(user)) {
             log.log(Level.getLevel(LogLevel.STRANGE), "User {} is trying to execute '{}' without starting the bot!", user.getId(), getCommandIdentifier());
             message.setText("Firstly you should start the bot! Execute '/start' command!");
             execute(absSender, message, user);

@@ -28,7 +28,7 @@ public final class MyNameCommand extends AnonymizerCommand {
         SendMessage message = new SendMessage();
         message.setChatId(chat.getId().toString());
 
-        if (!mAnonymouses.hasUser(user)) {
+        if (!mAnonymouses.hasAnonymous(user)) {
 
             sb.append("You are not in bot users' list! Send /start command!");
             log.log(Level.getLevel(LogLevel.STRANGE), "User {} is trying to execute '{}' without starting the bot.", user.getId(), getCommandIdentifier());

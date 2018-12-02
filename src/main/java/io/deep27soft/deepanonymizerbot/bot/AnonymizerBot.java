@@ -120,7 +120,7 @@ public final class AnonymizerBot extends TelegramLongPollingCommandBot {
             return false;
         }
 
-        if(!mAnonymouses.hasUser(user)) {
+        if(!mAnonymouses.hasAnonymous(user)) {
             LOG.log(Level.getLevel(LogLevel.STRANGE), "User {} is trying to send message without starting the bot!", user.hashCode());
             answer.setText("Firstly you should start bot! Use /start command!");
             replyToUser(answer, user, msg.getText());
