@@ -6,6 +6,7 @@ public final class LogTemplate {
     public static final String MESSAGE_PROCESSING = "Precessing user {}'s message.";
     public static final String MESSAGE_RECEIVED = "User {} has received message from another user {}.";
     public static final String MESSAGE_LOST = "User {} did not get message from another user {}.";
+    public static final String MESSAGE_SENT = "User {} sent message to other users: \"{}\".";
 
     public static final String COMMAND_PROCESSING = "User {} is executing '{}' command...";
     public static final String COMMAND_SUCCESS = "User {} has successfully executed '{}' command.";
