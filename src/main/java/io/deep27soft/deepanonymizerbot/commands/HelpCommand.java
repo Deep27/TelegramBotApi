@@ -19,7 +19,7 @@ public final class HelpCommand extends AnonymizerCommand {
     @Override
     public void execute(AbsSender absSender, User user, Chat chat, String[] strings) {
 
-        log.info(LogTemplate.COMMAND_PROCESSING, user.getId(), getCommandIdentifier());
+        log.info(LogTemplate.COMMAND_PROCESSING.getTemplate(), user.getId(), getCommandIdentifier());
 
         StringBuilder helpMessageBuilder = new StringBuilder("<b>Available commands:</b>\n\n");
 

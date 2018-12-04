@@ -2,7 +2,7 @@ package io.deep27soft.deepanonymizerbot.commands;
 
 import io.deep27soft.deepanonymizerbot.logger.LogLevel;
 import io.deep27soft.deepanonymizerbot.logger.LogTemplate;
-import io.deep27soft.deepanonymizerbot.model.Anonymouses;
+import io.deep27soft.deepanonymizerbot.service.AnonymousService;
 import org.apache.logging.log4j.Level;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Chat;
@@ -11,9 +11,9 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 
 public final class SetNameCommand extends AnonymizerCommand {
 
-    private final Anonymouses mAnonymouses;
+    private final AnonymousService mAnonymouses;
 
-    public SetNameCommand(Anonymouses anonymouses) {
+    public SetNameCommand(AnonymousService anonymouses) {
         super("set_name", "set or change name that will be displayed with your messages\n");
         mAnonymouses = anonymouses;
     }
@@ -21,13 +21,13 @@ public final class SetNameCommand extends AnonymizerCommand {
     @Override
     public void execute(AbsSender absSender, User user, Chat chat, String[] strings) {
 
-        log.info(LogTemplate.COMMAND_PROCESSING, user.getId(), getCommandIdentifier());
+        log.info(LogTemplate.COMMAND_PROCESSING.getTemplate(), user.getId(), getCommandIdentifier());
 
         SendMessage message = new SendMessage();
         message.setChatId(chat.getId().toString());
 
         if (!mAnonymouses.hasAnonymous(user)) {
-            log.log(Level.getLevel(LogLevel.STRANGE), "User {} is trying to execute '{}' without starting the bot!", user.getId(), getCommandIdentifier());
+            log.log(Level.getLevel(LogLevel.STRANGE.getValue()), "User {} is trying to execute '{}' without starting the bot!", user.getId(), getCommandIdentifier());
             message.setText("Firstly you should start the bot! Execute '/start' command!");
             execute(absSender, message, user);
             return;
@@ -36,7 +36,7 @@ public final class SetNameCommand extends AnonymizerCommand {
         String displayedName = getName(strings);
 
         if (displayedName == null) {
-            log.log(Level.getLevel(LogLevel.STRANGE), "User {} is trying to set empty name.", user.getId());
+            log.log(Level.getLevel(LogLevel.STRANGE.getValue()), "User {} is trying to set empty name.", user.getId());
             message.setText("You should use non-empty name!");
             execute(absSender, message, user);
             return;
@@ -55,7 +55,7 @@ public final class SetNameCommand extends AnonymizerCommand {
                 sb.append("Your new displayed name: '").append(displayedName).append("'.");
             }
         } else {
-            log.log(Level.getLevel(LogLevel.STRANGE), "User {} is trying to set taken name '{}'", user.getId(), displayedName);
+            log.log(Level.getLevel(LogLevel.STRANGE.getValue()), "User {} is trying to set taken name '{}'", user.getId(), displayedName);
             sb.append("Name ").append(displayedName).append(" is already in use! Choose another name!");
         }
 
@@ -70,6 +70,6 @@ public final class SetNameCommand extends AnonymizerCommand {
         }
 
         String name = String.join(" ", strings);
-        return name.replaceAll(" ", "").length() == 0 ? null : name;
+        return name.replaceAll(" ", "").isEmpty() ? null : name;
     }
 }

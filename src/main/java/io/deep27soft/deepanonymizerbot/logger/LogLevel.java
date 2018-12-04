@@ -1,9 +1,17 @@
 package io.deep27soft.deepanonymizerbot.logger;
 
-public final class LogLevel {
+public enum LogLevel {
 
-    public static final String STRANGE = "STRANGE";
-    public static final String SUCCESS = "SUCCESS";
+    STRANGE("STRANGE"),
+    SUCCESS("SUCCESS");
 
-    private LogLevel() {}
+    private final String mValue;
+
+    LogLevel(String value) {
+        mValue = value;
+    }
+
+    public String getValue() {
+        return mValue;
+    }
 }

@@ -2,7 +2,7 @@ package io.deep27soft.deepanonymizerbot.commands;
 
 import io.deep27soft.deepanonymizerbot.logger.LogLevel;
 import io.deep27soft.deepanonymizerbot.logger.LogTemplate;
-import io.deep27soft.deepanonymizerbot.model.Anonymouses;
+import io.deep27soft.deepanonymizerbot.service.AnonymousService;
 import org.apache.logging.log4j.Level;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Chat;
@@ -11,9 +11,9 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 
 public final class MyNameCommand extends AnonymizerCommand {
 
-    private final Anonymouses mAnonymouses;
+    private final AnonymousService mAnonymouses;
 
-    public MyNameCommand(Anonymouses anonymouses) {
+    public MyNameCommand(AnonymousService anonymouses) {
         super("my_name", "show your current name that will be displayed with your messages\n");
         mAnonymouses = anonymouses;
     }
@@ -21,7 +21,7 @@ public final class MyNameCommand extends AnonymizerCommand {
     @Override
     public void execute(AbsSender absSender, User user, Chat chat, String[] strings) {
 
-        log.info(LogTemplate.COMMAND_PROCESSING, user.getId(), getCommandIdentifier());
+        log.info(LogTemplate.COMMAND_PROCESSING.getTemplate(), user.getId(), getCommandIdentifier());
 
         StringBuilder sb = new StringBuilder();
 
@@ -31,12 +31,12 @@ public final class MyNameCommand extends AnonymizerCommand {
         if (!mAnonymouses.hasAnonymous(user)) {
 
             sb.append("You are not in bot users' list! Send /start command!");
-            log.log(Level.getLevel(LogLevel.STRANGE), "User {} is trying to execute '{}' without starting the bot.", user.getId(), getCommandIdentifier());
+            log.log(Level.getLevel(LogLevel.STRANGE.getValue()), "User {} is trying to execute '{}' without starting the bot.", user.getId(), getCommandIdentifier());
 
         } else if(mAnonymouses.getDisplayedName(user) == null) {
 
             sb.append("Currently you don't have a name.\nSet it using command:\n'/set_name <displayed_name>'");
-            log.log(Level.getLevel(LogLevel.STRANGE), "User {} is trying to execute '{}' without having a name.", user.getId(), getCommandIdentifier());
+            log.log(Level.getLevel(LogLevel.STRANGE.getValue()), "User {} is trying to execute '{}' without having a name.", user.getId(), getCommandIdentifier());
 
         } else {
 

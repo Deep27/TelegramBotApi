@@ -22,9 +22,9 @@ abstract class AnonymizerCommand extends BotCommand {
     void execute(AbsSender sender, SendMessage message, User user) {
         try {
             sender.execute(message);
-            log.log(Level.getLevel(LogLevel.SUCCESS), LogTemplate.COMMAND_SUCCESS, user.getId(), getCommandIdentifier());
+            log.log(Level.getLevel(LogLevel.SUCCESS.getValue()), LogTemplate.COMMAND_SUCCESS.getTemplate(), user.getId(), getCommandIdentifier());
         } catch (TelegramApiException e) {
-            log.error(LogTemplate.COMMAND_EXCEPTION, user.getId(), getCommandIdentifier(), e);
+            log.error(LogTemplate.COMMAND_EXCEPTION.getTemplate(), user.getId(), getCommandIdentifier(), e);
         }
     }
 }
