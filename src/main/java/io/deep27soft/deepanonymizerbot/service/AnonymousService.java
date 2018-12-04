@@ -52,7 +52,6 @@ public final class AnonymousService {
         return mAnonymouses.stream();
     }
 
-
     private boolean isDisplayedNameTaken(String name) {
         return mAnonymouses.stream().anyMatch(a -> Objects.equals(a.getDisplayedName(), name));
     }
