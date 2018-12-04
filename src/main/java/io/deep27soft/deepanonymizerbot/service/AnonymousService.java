@@ -1,5 +1,6 @@
-package io.deep27soft.deepanonymizerbot.model;
+package io.deep27soft.deepanonymizerbot.service;
 
+import io.deep27soft.deepanonymizerbot.model.Anonymous;
 import org.telegram.telegrambots.meta.api.objects.User;
 
 import java.util.HashSet;
@@ -7,22 +8,22 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
 
-public final class Anonymouses {
+public final class AnonymousService {
 
     private final Set<Anonymous> mAnonymouses;
 
-    public Anonymouses() {
+    public AnonymousService() {
         mAnonymouses = new HashSet<>();
     }
 
     public boolean setUserDisplayedName(User user, String name) {
 
-        if (isDisplayedNameTaken(name)) {
-            return false;
-        } else {
+        if (!isDisplayedNameTaken(name)) {
             mAnonymouses.stream().filter(a -> a.getUser().equals(user)).forEach(a -> a.setDisplayedName(name));
             return true;
         }
+
+        return false;
     }
 
     public boolean removeAnonymous(User user) {
@@ -33,13 +34,13 @@ public final class Anonymouses {
         return mAnonymouses.add(anonymous);
     }
 
-    public boolean hasAnonymous(User u) {
-        return mAnonymouses.stream().anyMatch(a -> a.getUser().equals(u));
+    public boolean hasAnonymous(User user) {
+        return mAnonymouses.stream().anyMatch(a -> a.getUser().equals(user));
     }
 
-    public String getDisplayedName(User u) {
+    public String getDisplayedName(User user) {
 
-        Anonymous anonymous = mAnonymouses.stream().filter(a -> a.getUser().equals(u)).findFirst().orElse(null);
+        Anonymous anonymous = mAnonymouses.stream().filter(a -> a.getUser().equals(user)).findFirst().orElse(null);
 
         if (anonymous == null) {
             return null;
@@ -51,8 +52,8 @@ public final class Anonymouses {
         return mAnonymouses.stream();
     }
 
-
     private boolean isDisplayedNameTaken(String name) {
         return mAnonymouses.stream().anyMatch(a -> Objects.equals(a.getDisplayedName(), name));
     }
 }
+

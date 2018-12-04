@@ -13,8 +13,8 @@ public final class BotInitializer {
 
     private static final Logger LOG = LogManager.getLogger(BotInitializer.class);
 
-    private final static String PROXY_HOST = "80.11.200.161";
-    private final static int PROXY_PORT = 9999;
+    private static final String PROXY_HOST = "80.11.200.161";
+    private static final int PROXY_PORT = 9999;
 
     public static void main(String[] args) {
 
